@@ -42,7 +42,7 @@ public class ApiController {
         User loggedInUser = this.client.login(username, password);
         if (loggedInUser != null) {
             user = loggedInUser;
-            logger.info("User logged in, token: %s", user.getAccessToken());
+            logger.info("User logged in, token: {}", user.getAccessToken());
             saveSession(user);
 
             return user;
@@ -58,18 +58,16 @@ public class ApiController {
     public void loadSession() {
        String json = FileIO.readJson(SESSION_FILE);
        User user = new Gson().fromJson(json, User.class);
-       logger.info("Found and loaded session file, token: %s", user.getAccessToken());
+       logger.info("Found and loaded session file, token: {}", user.getAccessToken());
        this.user = user;
     }
 
-    public void searchIllustration(String keyword) {
-        Request r = ApiRequests.illustrationSearch(keyword);
+    public Page searchIllustration(String keyword) {
         if (!isLoggedIn()) {
             logger.error("Need to login in order to search");
-            return;
+            return null;
         }
 
-        Page page = client.searchIllustration(keyword, user.getAccessToken());
-
+        return client.searchIllustration(keyword, user.getAccessToken());
     }
 }

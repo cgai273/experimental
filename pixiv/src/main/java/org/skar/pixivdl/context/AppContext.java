@@ -8,18 +8,10 @@ import javax.inject.Inject;
 public class AppContext {
 
     private ApiController apiController;
-    private RestClient client;
 
     @Inject
-    public AppContext(
-            RestClient client,
-            ApiController apiController) {
-        this.client = client;
+    public AppContext(ApiController apiController) {
         this.apiController = apiController;
-    }
-
-    public RestClient getRestClient() {
-        return client;
     }
 
     public ApiController getApiController() { return apiController; }

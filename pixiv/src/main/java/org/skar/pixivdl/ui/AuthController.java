@@ -37,7 +37,6 @@ public class AuthController {
 
             User user = apiController.login(usernameinput.getText(), passwordinput.getText());
 
-            apiController.searchIllustration("なのは");
             autherrordisplay.setText(user.getAccessToken());
         }
     }

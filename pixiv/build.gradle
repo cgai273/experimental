@@ -46,9 +46,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.truth/truth
     testCompile group: 'com.google.truth', name: 'truth', version: '0.40'
 
-    compile 'org.slf4j:slf4j-nop:1.7.25'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
 
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     compile 'org.apache.commons:commons-math3:3.6.1'

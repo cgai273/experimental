@@ -53,9 +53,10 @@ public class RestClient {
         try {
             Request r = ApiRequests.illustrationSearch(keyword, accessToken);
             Response res = send(r);
+            JSONObject Jobject = new JSONObject(res.body().string());
             return null;
         } catch (IOException e) {
-            logger.error("Search Illustration request failed with %s", e.toString());
+            logger.error("Search Illustration request failed with {}", e);
         }
 
         return null;

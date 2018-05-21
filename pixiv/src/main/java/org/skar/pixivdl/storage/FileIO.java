@@ -14,34 +14,37 @@ public class FileIO {
 
     public static void writeJson(String json, String path) {
         Path p = Paths.get(path).toAbsolutePath();
-        try {
-            Writer writer = new FileWriter(p.toFile());
-            writer.write(json);
+        try (PrintWriter writer = new PrintWriter(p.toString())){
+            writer.println(json);
         }  catch(IOException e) {
-            logger.error("Cannot write to %s", p.toString());
+            logger.error("Cannot write to {}", p);
             return;
         }
 
-        logger.info("Json written successfully to %s", p.toString());
+        logger.info("Json written successfully to {}", p);
     }
 
     public static String readJson(String path) {
         Path p = Paths.get(path).toAbsolutePath();
+        return readJson(p);
+    }
+
+    public static String readJson(Path p) {
         if (p.toFile().exists()) {
             try {
-                byte[] bytes = Files.readAllBytes(Paths.get(path));
+                byte[] bytes = Files.readAllBytes(p);
 
-                logger.info("Read success: %s ", p.toString());
+                logger.info("Read success: {}", p);
 
                 return new String(bytes, "utf-8");
             } catch(IOException e) {
 
-                logger.error("fail to read file %s", p.toString());
+                logger.error("fail to read file {}", p);
                 return null;
             }
         }
 
-        logger.info("File does not exists at %s.", p.toString());
+        logger.info("File does not exists at {}.", p);
         return null;
     }
 }
