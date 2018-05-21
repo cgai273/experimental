@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="84.0" prefWidth="616.0" styleClass=".container" stylesheets="@Auth.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skar.pixivdl.ui.AuthController">
+   <children>
+      <HBox prefHeight="161.0" prefWidth="616.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Username:" />
+                  <TextField fx:id="usernameinput" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Password:" />
+                  <PasswordField fx:id="passwordinput" />
+               </children>
+            </VBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="loginaction" mnemonicParsing="false" onAction="#handleUserLogin" text="Login" />
+                  <Button fx:id="logoutaction" mnemonicParsing="false" text="Logout" />
+                  <Button fx:id="refreshtokenaction" mnemonicParsing="false" text="Refresh Token" />
+               </children>
+            </HBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <CheckBox mnemonicParsing="false" text="CheckBox" />
+                  <TextArea fx:id="autherrordisplay" prefHeight="144.0" prefWidth="128.0" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
