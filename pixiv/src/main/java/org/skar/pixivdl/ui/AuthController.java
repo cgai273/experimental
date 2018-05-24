@@ -8,7 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.skar.pixivdl.Main;
 import org.skar.pixivdl.entity.User;
-import org.skar.pixivdl.controllers.ApiController;
+import org.skar.pixivdl.models.SessionStore;
 
 
 public class AuthController {
@@ -33,9 +33,9 @@ public class AuthController {
 
     @FXML protected void handleUserLogin(ActionEvent event) {
         if (validate()) {
-            ApiController apiController = Main.appContext().getApiController();
+            SessionStore sessionStore = Main.appContext().getSessionStore();
 
-            User user = apiController.login(usernameinput.getText(), passwordinput.getText());
+            User user = sessionStore.login(usernameinput.getText(), passwordinput.getText());
 
             autherrordisplay.setText(user.getAccessToken());
         }

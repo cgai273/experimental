@@ -1,12 +1,10 @@
 package org.skar.pixivdl.net;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.skar.pixivdl.controllers.ApiController;
+import org.skar.pixivdl.models.SessionStore;
 import org.skar.pixivdl.entity.Page;
 import org.skar.pixivdl.entity.User;
 import org.slf4j.Logger;
@@ -15,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 public class RestClient {
-    final Logger logger = LoggerFactory.getLogger(ApiController.class);
+    final Logger logger = LoggerFactory.getLogger(SessionStore.class);
     private final OkHttpClient client = new OkHttpClient();
 
     // This is used after login
@@ -54,7 +52,7 @@ public class RestClient {
             Request r = ApiRequests.illustrationSearch(keyword, accessToken);
             Response res = send(r);
             JSONObject Jobject = new JSONObject(res.body().string());
-            return null;
+            return Page.parsePage(Jobject);
         } catch (IOException e) {
             logger.error("Search Illustration request failed with {}", e);
         }
