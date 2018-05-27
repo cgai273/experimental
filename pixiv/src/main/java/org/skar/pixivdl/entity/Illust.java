@@ -1,13 +1,17 @@
 package org.skar.pixivdl.entity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Image {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Illust {
     // image_urls:square_medium
     String imageUrlThumb;
 
     // check meta_single_page:original_image_url if empty check meta_pages:0:image_urls:original
-    String imageUrlOriginal;
+    List<String> imageUrlOriginal;
 
     // title
     String title;
@@ -27,26 +31,28 @@ public class Image {
     // user:account
     String authorAccount;
 
-    public static Image parseImage(JSONObject jObject) {
-        Image img = new Image();
+    public static Illust parseIllust(JSONObject jObject) {
+        Illust img = new Illust();
         img.setImageUrlThumb(
                 jObject.getJSONObject("image_urls")
-                        .getString("square_medium"));
+                        .getString("medium"));
 
-        String originalImageUrl;
+        ArrayList<String> originalImageUrls = new ArrayList<>();
         if (jObject.getLong("page_count") == 1) {
-            originalImageUrl = jObject
+            originalImageUrls.add(jObject
                     .getJSONObject("meta_single_page")
-                    .getString("original_image_url");
+                    .getString("original_image_url"));
         } else {
-            originalImageUrl = jObject
-                    .getJSONArray("meta_pages")
-                    .getJSONObject(0)
-                    .getJSONObject("image_urls")
-                    .getString("original");
+            JSONArray images = jObject.getJSONArray("meta_pages");
+            for (int i = 0; i < images.length(); i++) {
+                originalImageUrls.add(images
+                        .getJSONObject(i)
+                        .getJSONObject("image_urls")
+                        .getString("original"));
+            }
         }
 
-        img.setImageUrlOriginal(originalImageUrl);
+        img.setImageUrlOriginal(originalImageUrls);
 
         img.setTitle(jObject.getString("title"));
         img.setTotalBookmarks(jObject.getLong("total_bookmarks"));
@@ -63,7 +69,7 @@ public class Image {
         return imageUrlThumb;
     }
 
-    public String getImageUrlOriginal() {
+    public List<String> getImageUrlOriginal() {
         return imageUrlOriginal;
     }
 
@@ -95,8 +101,8 @@ public class Image {
         this.imageUrlThumb = imageUrlThumb;
     }
 
-    public void setImageUrlOriginal(String imageUrlOriginal) {
-        this.imageUrlOriginal = imageUrlOriginal;
+    public void setImageUrlOriginal(List<String> imageUrlOriginals) {
+        this.imageUrlOriginal = imageUrlOriginals;
     }
 
     public void setTitle(String title) {

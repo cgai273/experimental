@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.skar.pixivdl.Main;
+import org.skar.pixivdl.models.PageStore;
 import org.skar.pixivdl.models.SessionStore;
 import org.skar.pixivdl.entity.Page;
 
 public class SearchController {
+    private final PageStore pageStore;
 
     @FXML
     TextField searchinput;
@@ -16,6 +18,9 @@ public class SearchController {
     @FXML
     Button searchhitaction;
 
+    public SearchController() {
+        pageStore = Main.appContext().getPageStore();
+    }
 
     @FXML
     public void handleSearchSubmit(ActionEvent e) {
@@ -24,13 +29,8 @@ public class SearchController {
         if (keyword != null && keyword.length() > 0) {
             SessionStore controller = Main.appContext().getSessionStore();
             Page page = controller.searchIllustration(keyword);
-
-            if (page != null) {
-                renderPage(page);
-            }
+            pageStore.init(page);
         }
     }
 
-    public void renderPage(Page page) {
-    }
 }

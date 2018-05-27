@@ -6,31 +6,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skar.pixivdl.ui.MainController">
-   <children>
-      <VBox prefHeight="400.0" prefWidth="600.0">
-         <children>
-            <TabPane fx:id="statuspane" prefHeight="113.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Authentication">
-                  <content>
-                    <AnchorPane fx:id="authcontainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-                <Tab text="Search">
-                  <content>
-                    <AnchorPane fx:id="searchcontainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-            <ScrollPane prefHeight="295.0" prefWidth="600.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-              </content>
-            </ScrollPane>
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+<GridPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skar.pixivdl.ui.MainController">
+    <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints maxHeight="140.0" minHeight="140.0" prefHeight="140.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+    </rowConstraints>
+     <children>
+      <TabPane fx:id="statuspane" style="-fx-min-width: 100%; -fx-min-height: 150;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Authentication">
+            <content>
+              <AnchorPane fx:id="authcontainer" minHeight="0.0" minWidth="0.0" />
+            </content>
+          </Tab>
+          <Tab text="Search">
+            <content>
+              <AnchorPane fx:id="searchcontainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <StackPane fx:id="pageContainer" style="-fx-min-width: 100%; -fx-pref-height: 100%;"  GridPane.rowIndex="1" />
+     </children>
+</GridPane>

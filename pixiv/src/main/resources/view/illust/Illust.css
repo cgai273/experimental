@@ -1,0 +1,26 @@
+
+.IllustContainer {
+    -fx-max-width: 200;
+    -fx-min-width: 200;
+}
+
+.IllustView {
+    -fx-max-width: 180;
+    -fx-min-width: 180;
+    -fx-max-height: 180;
+    -fx-min-height: 180;
+    -fx-alignment: baseline-center;
+}
+
+.IllustTitle {
+}
+
+.IllustAuthorLink {
+
+}
+
+.IllustDownload {
+    -fx-background-image: url("dl_icn.png");
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-size: 36;
+}

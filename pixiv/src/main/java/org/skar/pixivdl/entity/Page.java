@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Page {
     // illusts
-    List<Image> illusts;
+    List<Illust> illusts;
 
     // next_url
     String nextUrl;
@@ -17,11 +17,11 @@ public class Page {
 
     }
 
-    public List<Image> getIllusts() {
+    public List<Illust> getIllusts() {
         return illusts;
     }
 
-    public void setIllusts(List<Image> illusts) {
+    public void setIllusts(List<Illust> illusts) {
         this.illusts = illusts;
     }
 
@@ -38,7 +38,7 @@ public class Page {
         JSONArray illustsJSON = obj.getJSONArray("illusts");
         ArrayList illusts = new ArrayList(illustsJSON.length());
         for(int i = 0; i < illustsJSON.length(); i++) {
-            illusts.add(i, Image.parseImage(illustsJSON.getJSONObject(i)));
+            illusts.add(i, Illust.parseIllust(illustsJSON.getJSONObject(i)));
         }
         page.setIllusts(illusts);
         page.setNextUrl(obj.getString("next_url"));

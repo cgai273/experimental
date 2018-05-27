@@ -8,9 +8,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileIO {
     static final Logger logger = LoggerFactory.getLogger(FileIO.class);
+
+    private static final Pattern p  = Pattern.compile("[\\w+_]+\\.(jpg|jpeg|png|gif)$");
 
     public static void writeJson(String json, String path) {
         Path p = Paths.get(path).toAbsolutePath();
@@ -45,6 +49,14 @@ public class FileIO {
         }
 
         logger.info("File does not exists at {}.", p);
+        return null;
+    }
+
+    public static String extractFileNameFromUrl(String url) {
+        Matcher m = p.matcher(url);
+        if (m.find()) {
+            return m.group(0);
+        }
         return null;
     }
 }

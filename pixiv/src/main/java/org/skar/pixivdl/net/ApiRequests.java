@@ -2,6 +2,7 @@ package org.skar.pixivdl.net;
 
 import com.google.common.collect.*;
 import okhttp3.*;
+import okhttp3.internal.http2.Header;
 import okio.BufferedSink;
 
 import javax.annotation.Nullable;
@@ -75,6 +76,13 @@ public class ApiRequests {
         return new Request.Builder()
                 .url(url)
                 .headers(getCommonHeaders(accessToken).build())
+                .build();
+    }
+
+    public static Request imageDownload(String imageUrl) {
+        return new Request.Builder()
+                .url(imageUrl)
+                .addHeader("Referer", "http://www.pixiv.net/")
                 .build();
     }
 

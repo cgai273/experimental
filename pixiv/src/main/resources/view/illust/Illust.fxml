@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:controller="org.skar.pixivdl.ui.IllustController" styleClass="IllustContainer" stylesheets="@Illust.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <ImageView fx:id="imageView" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" styleClass="IllustView" VBox.vgrow="NEVER">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin></ImageView>
+            <Label fx:id="title" alignment="CENTER" prefHeight="40.0" prefWidth="176.0" style="-fx-min-width: 200; -fx-background-color: white;" styleClass="IllustTitle" text="{Illustration Title}" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="UD Digi Kyokasho N-R" size="14.0" />
+               </font></Label>
+            <HBox alignment="CENTER" prefHeight="25.0" prefWidth="200.0">
+               <children>
+                  <Text fx:id="views" strokeType="OUTSIDE" strokeWidth="0.0" text="Views">
+                     <HBox.margin>
+                        <Insets right="50.0" />
+                     </HBox.margin>
+                  </Text>
+                  <Text fx:id="favorites" strokeType="OUTSIDE" strokeWidth="0.0" text="Favs" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="IllustActionContainer">
+               <children>
+                  <Hyperlink fx:id="authorLink" prefWidth="156.0" style="-fx-min-height: 36;" styleClass="IllustAuthorLink" text="{Link to Author}">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Hyperlink>
+                  <Button fx:id="download" alignment="CENTER" minHeight="36.0" minWidth="36.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" styleClass="IllustDownload" stylesheets="@Illust.css">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="4.0" right="4.0" top="8.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>

@@ -1,8 +1,6 @@
 package org.skar.pixivdl.net;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.json.JSONObject;
 import org.skar.pixivdl.models.SessionStore;
 import org.skar.pixivdl.entity.Page;
@@ -14,13 +12,19 @@ import java.io.IOException;
 
 public class RestClient {
     final Logger logger = LoggerFactory.getLogger(SessionStore.class);
+
     private final OkHttpClient client = new OkHttpClient();
 
     // This is used after login
     private OkHttpClient apiClient;
 
-    public RestClient() {
 
+
+    public RestClient() {
+    }
+
+    public void asyncImageDownload(String imageUrl, Callback cb) throws IOException {
+        client.newCall(ApiRequests.imageDownload(imageUrl)).enqueue(cb);
     }
 
     public Response send(Request r) throws IOException {
