@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+// TODO: Make all request async.
+// TODO: Turn this into an async service.
 public class RestClient {
     final Logger logger = LoggerFactory.getLogger(SessionStore.class);
 
@@ -59,6 +61,19 @@ public class RestClient {
             return Page.parsePage(Jobject);
         } catch (IOException e) {
             logger.error("Search Illustration request failed with {}", e);
+        }
+
+        return null;
+    }
+
+    public Page getNextPage(String nextUrl, String accessToken) {
+        try {
+            Request r= ApiRequests.nextPage(nextUrl, accessToken);
+            Response res = send(r);
+            JSONObject Jobject = new JSONObject(res.body().string());
+            return Page.parsePage(Jobject);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
         }
 
         return null;

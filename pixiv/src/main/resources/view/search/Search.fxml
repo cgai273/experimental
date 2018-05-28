@@ -22,6 +22,12 @@
                   <TextField fx:id="saveLocationInput" prefHeight="25.0" prefWidth="348.0" />
                </children>
             </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button onAction="#handlePrevPage" mnemonicParsing="false" text="&lt;Prev" />
+                  <Button onAction="#handleNextPage" mnemonicParsing="false" text="Next&gt;" />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

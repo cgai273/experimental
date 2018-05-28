@@ -20,6 +20,7 @@ public class SearchController {
 
     private final PageStore pageStore;
     private final SettingStore settingStore;
+    private final SessionStore sessionStore;
 
 
     @FXML
@@ -34,6 +35,7 @@ public class SearchController {
     public SearchController() {
         settingStore = Main.appContext().getSettingStore();
         pageStore = Main.appContext().getPageStore();
+        sessionStore = Main.appContext().getSessionStore();
     }
 
     @FXML
@@ -41,8 +43,7 @@ public class SearchController {
         String keyword = searchinput.getText();
 
         if (keyword != null && keyword.length() > 0) {
-            SessionStore controller = Main.appContext().getSessionStore();
-            Page page = controller.searchIllustration(keyword);
+            Page page = sessionStore.searchIllustration(keyword);
             logger.info("Next page is {}", page.getNextUrl());
             pageStore.init(page);
         }
@@ -56,6 +57,26 @@ public class SearchController {
         if (selectedDirectory != null) {
             settingStore.setSaveLocation(selectedDirectory);
             saveLocationInput.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+    // TODO: Cache page thumb images.
+    @FXML
+    public void handlePrevPage(ActionEvent e) {
+
+    }
+
+    // TODO: Cache page thumb images.
+    @FXML
+    public void handleNextPage(ActionEvent e) {
+        if (pageStore.next() == null) {
+            Page p = pageStore.getCurrentPage();
+            if (p.getNextUrl() != null) {
+                Page nextPage = sessionStore.getNextPage(p.getNextUrl());
+                logger.info("Next page is {}", nextPage.getNextUrl());
+                pageStore.addPage(nextPage);
+                pageStore.next();
+            }
         }
     }
 

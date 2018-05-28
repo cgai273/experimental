@@ -86,6 +86,13 @@ public class ApiRequests {
                 .build();
     }
 
+    public static Request nextPage(String nextUrl, String accessToken) {
+        return new Request.Builder()
+                .url(nextUrl)
+                .headers(getCommonHeaders(accessToken).build())
+                .build();
+    }
+
     private static HttpUrl.Builder getBaseUrl() {
         return new HttpUrl.Builder()
                 .scheme(API_SCHEME)

@@ -72,4 +72,13 @@ public class SessionStore {
 
         return client.searchIllustration(keyword, currentUser.get().getAccessToken());
     }
+
+    public Page getNextPage(String nextUrl) {
+        if (!isLoggedIn()) {
+            logger.error("Need to login in order to get next page");
+            return null;
+        }
+
+        return client.getNextPage(nextUrl, currentUser.get().getAccessToken());
+    }
 }
