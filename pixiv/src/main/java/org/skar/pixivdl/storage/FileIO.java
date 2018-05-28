@@ -59,4 +59,13 @@ public class FileIO {
         }
         return null;
     }
+
+    public static void copyImageInputStream(InputStream inputStream, Path p) {
+        try {
+            Files.copy(inputStream, p);
+        } catch (IOException e) {
+            logger.error("Error saving to {}", p.toString());
+            logger.error(e.getMessage());
+        }
+    }
 }

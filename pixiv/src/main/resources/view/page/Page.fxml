@@ -10,7 +10,7 @@
    <content>
       <AnchorPane>
          <children>
-            <TilePane fx:id="illustContainer" />
+            <FlowPane fx:id="illustContainer" />
          </children>
       </AnchorPane>
    </content>

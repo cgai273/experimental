@@ -6,14 +6,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="12.0" prefWidth="281.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skar.pixivdl.ui.SearchController">
+<AnchorPane prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skar.pixivdl.ui.SearchController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <VBox prefHeight="0.0" prefWidth="462.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField fx:id="searchinput" />
-            <Button fx:id="searchhitaction" onAction="#handleSearchSubmit" mnemonicParsing="false" text="Button" />
+            <HBox prefHeight="50.0" prefWidth="152.0">
+               <children>
+                  <TextField fx:id="searchinput" />
+                  <Button fx:id="searchhitaction" mnemonicParsing="false" onAction="#handleSearchSubmit" text="Search" />
+               </children>
+            </HBox>
+            <HBox prefHeight="50.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="saveLocationSetting" mnemonicParsing="false" onAction="#handleSaveLocationSelect" text="Save Location" />
+                  <TextField fx:id="saveLocationInput" prefHeight="25.0" prefWidth="348.0" />
+               </children>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import org.skar.pixivdl.Main;
@@ -29,7 +30,7 @@ public class PagePanelController {
     private final SessionStore sessionStore;
 
     @FXML
-    TilePane illustContainer;
+    FlowPane illustContainer;
 
     public PagePanelController() {
         pageStore = Main.appContext().getPageStore();
