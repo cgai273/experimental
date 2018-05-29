@@ -22,10 +22,16 @@
                   <TextField fx:id="saveLocationInput" prefHeight="25.0" prefWidth="348.0" />
                </children>
             </HBox>
+            <HBox>
+               <children>
+                  <CheckBox fx:id="favFilterToggle" mnemonicParsing="false" onAction="#toggleFavFilter" text="Apply bookmark count filter" />
+                  <TextField fx:id="favFilterInput" onKeyTyped="#updateFavFilterInput" prefHeight="25.0" prefWidth="55.0" />
+               </children>
+            </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button onAction="#handlePrevPage" mnemonicParsing="false" text="&lt;Prev" />
-                  <Button onAction="#handleNextPage" mnemonicParsing="false" text="Next&gt;" />
+                  <Button mnemonicParsing="false" onAction="#handlePrevPage" text="&lt;Prev" />
+                  <Button mnemonicParsing="false" onAction="#handleNextPage" text="Next&gt;" />
                </children>
             </HBox>
          </children>

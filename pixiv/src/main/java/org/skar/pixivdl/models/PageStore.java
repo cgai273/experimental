@@ -1,15 +1,20 @@
 package org.skar.pixivdl.models;
 
+import com.google.common.collect.ImmutableMap;
 import javafx.beans.property.*;
+import javafx.scene.image.Image;
 import org.skar.pixivdl.entity.Page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PageStore {
     private static final int INIT_PAGE_INDEX = -1;
     private List<Page> pages = new ArrayList<>();
     private IntegerProperty pageIndex = new SimpleIntegerProperty(INIT_PAGE_INDEX);
+    private Map<String, Image> imageUrlCache = new HashMap<>();
 
     public IntegerProperty getCurrentPageIndex() { return pageIndex; }
 
@@ -48,6 +53,14 @@ public class PageStore {
         }
 
         return null;
+    }
+
+    public Image getImageUrlCache(String key) {
+        return imageUrlCache.get(key);
+    }
+
+    public void cacheImageUrl(String url, Image image) {
+        imageUrlCache.put(url, image);
     }
 
     public void init(Page p) {

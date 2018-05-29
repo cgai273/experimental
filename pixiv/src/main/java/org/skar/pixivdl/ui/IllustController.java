@@ -13,6 +13,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import org.skar.pixivdl.Main;
 import org.skar.pixivdl.entity.Illust;
+import org.skar.pixivdl.models.PageStore;
 import org.skar.pixivdl.models.SettingStore;
 import org.skar.pixivdl.net.RestClient;
 import org.skar.pixivdl.storage.FileIO;
@@ -29,6 +30,7 @@ public class IllustController {
     final Logger logger = LoggerFactory.getLogger(IllustController.class);
     final RestClient client;
 
+    PageStore   pageStore;
     SettingStore settingStore;
     Illust illust;
 
@@ -68,6 +70,7 @@ public class IllustController {
         public void onResponse(Call call, Response response) {
             InputStream inputStream = response.body().byteStream();
             Image img = new Image(inputStream);
+            pageStore.cacheImageUrl(response.request().url().toString(), img);
             image.setSmooth(true);
             image.setPreserveRatio(true);
             image.setImage(img);
@@ -113,6 +116,7 @@ public class IllustController {
     public IllustController() {
         client = Main.appContext().getRestClient();
         settingStore = Main.appContext().getSettingStore();
+        pageStore = Main.appContext().getPageStore();
     }
 
 
@@ -125,10 +129,15 @@ public class IllustController {
         favorites.setText(Long.toString(illust.getTotalBookmarks()));
         authorLink.setText(illust.getAuthorName());
 
-        try {
-            client.asyncImageDownload(illust.getImageUrlThumb(), new UpdateThumbImage(imageView));
-        } catch (IOException e) {
-            logger.error(e.getMessage());
+        Image cachedImage = pageStore.getImageUrlCache(illust.getImageUrlThumb());
+        if (cachedImage != null) {
+            imageView.setImage(cachedImage);
+        } else {
+            try {
+                client.asyncImageDownload(illust.getImageUrlThumb(), new UpdateThumbImage(imageView));
+            } catch (IOException e) {
+                logger.error(e.getMessage());
+            }
         }
     }
 }

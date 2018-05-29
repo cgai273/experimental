@@ -3,7 +3,9 @@ package org.skar.pixivdl.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
 import org.skar.pixivdl.Main;
 import org.skar.pixivdl.models.PageStore;
@@ -22,7 +24,6 @@ public class SearchController {
     private final SettingStore settingStore;
     private final SessionStore sessionStore;
 
-
     @FXML
     TextField searchinput;
 
@@ -31,6 +32,12 @@ public class SearchController {
 
     @FXML
     TextField saveLocationInput;
+
+    @FXML
+    CheckBox favFilterToggle;
+
+    @FXML
+    TextField favFilterInput;
 
     public SearchController() {
         settingStore = Main.appContext().getSettingStore();
@@ -63,7 +70,7 @@ public class SearchController {
     // TODO: Cache page thumb images.
     @FXML
     public void handlePrevPage(ActionEvent e) {
-
+        pageStore.previous();
     }
 
     // TODO: Cache page thumb images.
@@ -80,4 +87,21 @@ public class SearchController {
         }
     }
 
+    @FXML
+    public void toggleFavFilter(ActionEvent e) {
+        settingStore.toggleViewFilter(favFilterToggle.isSelected());
+    }
+
+    @FXML
+    public void updateFavFilterInput(KeyEvent e) {
+        String text = favFilterInput.getText() + e.getCharacter();
+        String filteredText = text.replaceAll("[^\\d]", "");
+        favFilterInput.setText(filteredText);
+        favFilterInput.positionCaret(filteredText.length());
+        if (filteredText.length() > 0) {
+            settingStore.updateFavFilterCount(Integer.valueOf(filteredText));
+        }
+
+        e.consume();
+    }
 }

@@ -1,20 +1,17 @@
 package org.skar.pixivdl.ui;
 
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import org.skar.pixivdl.Main;
 import org.skar.pixivdl.entity.Illust;
 import org.skar.pixivdl.entity.Page;
 import org.skar.pixivdl.models.PageStore;
 import org.skar.pixivdl.models.SessionStore;
+import org.skar.pixivdl.models.SettingStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +25,7 @@ public class PagePanelController {
 
     private final PageStore pageStore;
     private final SessionStore sessionStore;
+    private final SettingStore settingStore;
 
     @FXML
     FlowPane illustContainer;
@@ -35,6 +33,7 @@ public class PagePanelController {
     public PagePanelController() {
         pageStore = Main.appContext().getPageStore();
         sessionStore = Main.appContext().getSessionStore();
+        settingStore = Main.appContext().getSettingStore();
 
         pageStore.getCurrentPageIndex().addListener(new ChangeListener<Number>() {
             @Override
@@ -62,6 +61,12 @@ public class PagePanelController {
 
         List<Pane> illustNodes = new ArrayList<>();
         for(Illust e : p.getIllusts()) {
+            if (settingStore.isFavFilterActive()) {
+                if (e.getTotalBookmarks() < settingStore.getFavFilterCount()) {
+                    continue;
+                }
+            }
+
             FXMLLoader loader = new FXMLLoader(illustTemplate);
             Pane illustPane = loader.load();
             IllustController ctrl = loader.getController();
