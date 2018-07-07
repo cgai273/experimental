@@ -2,6 +2,8 @@
 pixiv/out
 pixiv/.gradle
 
+.ipynb_checkpoints
+
 # Ignore idea
 **/.idea
 
