@@ -1,9 +1,12 @@
 import sklearn.feature_extraction as fe
 import pandas as pd
+import
 
-tfidf =  fe.text.TfidfVectorizer(min_df=0.2, max_df=0.5, ngram_range=(1, 2))
+
+tfidf =  fe.text.TfidfVectorizer(min_df=0.2, max_df=0.6, ngram_range=(1, 2))
 train_data = pd.read_pickle('../common/data/imdb/train_feather')
 texts = list(train_data['text'])
+ratings = list(train_data['rating'])
 vectorized_text = tfidf.fit_transform(texts)
 
 with pd.option_context('display.max_rows', 10, 'display.max_columns', 10):
