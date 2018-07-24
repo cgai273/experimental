@@ -1,0 +1,48 @@
+\documentclass[twocolumn, 10pt]{article}
+
+\usepackage[top=0.5in, bottom=1in, left=0.5in, right=0.5in]{geometry}
+\usepackage{amsmath}
+\hyphenpenalty=10000
+
+
+\newcommand{\actionset}{ \mathcal{A}}
+\newcommand{\stateset}{\mathcal{S}}
+\newcommand{\rewardset}{\mathcal{R}}
+
+\title{Note for Reinforcement Learning 2nd Edition}
+
+\begin{document}
+\maketitle
+
+\section*{Finite Markov Decision Process}
+
+MDP framework consists of an environment  and agent. For $t=0,1,2...t$, agent  receives observed state $S_t  \in  \stateset$ based on which the agent perform an action $A_t \in \actionset$.  The dynamic of the environemtn  then returns a reward $R_{t+1} \in \rewardset$.  This forms a trajectory $S_0,A_0,R_1, S_1,A_1, R_2, \ldots$.  The dynamic for MDP is defined to be 
+$$ p(s', r  \mid s, a) = Pr\{S_t = s', R_t = r  \mid  S_{t- 1} = s, A_{t-1} = a \} $$
+
+Several commonly use quantities:
+
+state-transition probability
+$$ p(s' \mid  s, a) = \sum_r p(s', r \mid s, a)$$
+
+expected reward for state-action pair
+$$
+\begin{aligned}
+ r(s, a)  &= E[R_t \mid S_{t-1} = s, A_{t - 1} = a]  \\
+                &=\sum_{r \in \rewardset} r  \sum_{s' \in \stateset} p(s', r \mid s, a) \\
+ \end{aligned}
+$$
+
+expected reward for state-action-next-state triples 
+
+$$
+\begin{aligned}
+r(s, a, s') &= E[R_t \mid S_{t-1} = s, A_{t-1} = a, S_t = s']  \\
+                    &= \sum_{r \in \rewardset} r  p(r \mid s, a, s') \\
+                    &= \sum_{r \in \rewardset} r  \frac{p(s', r \mid s, a) } {p(s' \mid s, a, s')}
+\end{aligned}
+$$
+
+
+
+
+\end{document}
