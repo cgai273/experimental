@@ -3,11 +3,14 @@
 \usepackage[top=0.5in, bottom=1in, left=0.5in, right=0.5in]{geometry}
 \usepackage{amsmath}
 \hyphenpenalty=10000
-
+\setlength{\columnsep}{1cm}
+\setlength{\columnseprule}{0.2pt}
 
 \newcommand{\actionset}{ \mathcal{A}}
 \newcommand{\stateset}{\mathcal{S}}
+\newcommand{\termstateset}{\mathcal{S}^+}
 \newcommand{\rewardset}{\mathcal{R}}
+\newcommand{\Mid}{ \bigg|}
 
 \title{Note for Reinforcement Learning 2nd Edition}
 
@@ -42,7 +45,45 @@ r(s, a, s') &= E[R_t \mid S_{t-1} = s, A_{t-1} = a, S_t = s']  \\
 \end{aligned}
 $$
 
+For episodic tasks, we have nonterminal states $\stateset$ and terminal states $\termstateset$.  Time of termination $T$ is  a random variable between episodes.  
 
+Returns at time step $t$ is 
+$$
+\begin{aligned}
+G_t &= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \\
+        &= R_{t+1} + \gamma G_{t+1} \\
+\end{aligned}
+$$
 
+All reinforcement learning algorithm involve estimating 3 quantities: value function, state-action function.
 
+A policy is a probability distribution on $\actionset$ given $s$ denoted as  $\pi (a \mid s)$.
+
+A value function of a state $s$ under a policy $\pi$ is the expected return when starting in  $s$ and following $\pi$ thereafter.
+
+$$ 
+\begin{aligned}
+v_{\pi}(s) &= E_{\pi} [G_t \mid S_t = s]  \\
+                 &=  E_{\pi} \left[ \sum^{\infty}_{i=0}  \gamma^i R_{t + i + 1} \Mid S_t = s \right],  \hspace{2ex} \mbox{ (for all } s \in \stateset)  \\
+                 &=  E_{\pi} \left[ R_{t+1} + \gamma \sum^{\infty}_{i=0} \gamma^i R_{(t+1) + i + 1} \Mid S_t = s \right] \\
+                 &=  E_{\pi} [ R_{t+1} \mid S_t = s]  + \gamma  E_{\pi} [ G_{t+1} \mid S_t = s ] \\
+                 &=  \sum_{a, r, s'} r p(s',  r \mid s , a) \pi(a \mid s) , \hspace{2ex} \mbox{(Law of Total Expectation)} \\ 
+                 &\hspace{3ex} +  \gamma  \sum_{a, s'} E_{\pi}[G_{t + 1} \mid S_{t+1} = s'] p(s' \mid s, a)  \pi (a \mid s)  \\
+                 &=  \sum_{a, r, s'} r p( r \mid s , a) \pi(a \mid s)  +  \gamma  \sum_{a, r, s'} v_{\pi}(s')  p(s', r \mid s, a)  \pi (a \mid s)  \\
+                 &= \sum_{a} \pi(a \mid s)  \sum_{r, s'}   p(s', r \mid s, a)   \left[ r  + \gamma \sum_{s'}  v_{\pi}(s')  \right]
+\end{aligned}
+$$
+
+The state-action function is the expected return  of taking an action $a$ at state $s$ before following the policy thereafter.
+$$
+\begin{aligned}
+ q(s, a) &= E_{\pi} [G_t \mid S_t = s, A_t = a]  \\
+             &= E_{\pi} \left[ \sum^{\infty}_{i=0}  \gamma^i R_{t + i + 1}  \Mid S_t = s , A_t = a\right]  \\
+             &= E_{\pi} [R_{t+1} \mid S_t = s, A_t =  a] + \gamma E_{\pi} [ G_{t+1} \mid S_t = s, A_t =  a] \\
+             &=  \sum_{s', r} r p(s', r  \mid s, a) + \gamma \sum_{s', a'} E_{\pi} [G_{t+1} \mid s', a'] p(s', a' \mid s, a) \\
+             &=  \sum_{s', r} r p(s', r  \mid s, a) + \gamma \sum_{s', a'} q(s', a') p( a' \mid s',  s, a) p(s' \mid  s, a) \\
+             &=  \sum_{s', r} r p(s', r  \mid s, a) + \gamma \sum_{s', a', r} q(s', a') \pi(a' \mid s')  p(s', r \mid  s, a) \\
+             &=  \sum_{s', r}  p(s', r  \mid s, a) \left [ r + \gamma \sum_{a'} q(s', a') \pi(a' \mid s')  \right] 
+ \end{aligned}
+$$
 \end{document}
