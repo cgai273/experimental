@@ -1,6 +1,6 @@
 \documentclass[twocolumn, 10pt]{article}
 
-\usepackage[top=0.5in, bottom=1in, left=0.5in, right=0.5in]{geometry}
+\usepackage[top=0.5in, bottom=1in, left=0.12in, right=0.2in]{geometry}
 \usepackage{amsmath}
 \hyphenpenalty=10000
 \setlength{\columnsep}{1cm}
@@ -86,4 +86,32 @@ $$
              &=  \sum_{s', r}  p(s', r  \mid s, a) \left [ r + \gamma \sum_{a'} q(s', a') \pi(a' \mid s')  \right] 
  \end{aligned}
 $$
+
+\subsubsection*{Optimal policy and value fucntions}
+
+ A policty $\pi' \geq \pi$ iff  $v'_{\pi}(s) \geq v_{\pi}(s), \forall s \in \stateset$. Optimal state value function is defined as $$v_*(s) = \max_{\pi} v_{\pi}(s),  \forall s \in \stateset$$
+ 
+ Similarly,  optimal state action value function is defined as $$ q_*(s, a) = \max_{\pi} q_{\pi}(s, a) $$
+   
+ Bellman optimality equation for $v_*$  
+ $$
+\begin{aligned}
+v_*(s) & = \max_{a} q_{\pi_*}(s, a) =\max_a E_{\pi} [G_t \mid S_t = s, A_t = a] \\
+            & = \max_{a} E_{\pi_*} [R_{t+ 1} + \gamma G_{t+1} \mid S_t = s, A_t = a] \\
+            & = \max_{a} [  E_{\pi_*} [R_{t+ 1}  \mid s, a ]  \\
+            & + \gamma   \sum_{s', r}  E_{\pi_*} [G_{t+1}  \mid S_{t+1} = s']p(s', r \mid  s, a)]  \\
+            & = \max_{a} \left[  \sum_{s', r} r p(s', r \mid s, a)   + \gamma   \sum_{s', r}  v_*(s')p(s', r \mid  s, a) \right]  \\
+            & = \max_{a} \sum_{s', r} p(s', r \mid s, a) [r + \gamma v_*(s')] \\
+\end{aligned}
+$$
+
+Bellman optimality equation for $q_*$
+ $q_*(s,a)$ is the value of taking action $a$ at state $s$, then follow optimal policy after. Hence we can also write (TODO: Mathematically justify this)
+$$ 
+\begin{aligned}
+q_*(s, a) & = E[R_{t+1} + \gamma v_*(S_{t+1}) \mid s, a] \\
+&= E[R_{t+1} + \gamma  \max_{a'} q_{\pi_*}(s', a')) \mid s, a] \\
+&= \sum_{s', r} p(s', r \mid s, a) [ r +\gamma  \max_{a'} q_{\pi_*}(s', a')] \\
+\end{aligned}$$
+
 \end{document}
