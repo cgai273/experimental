@@ -2,10 +2,13 @@
 
 \usepackage[top=0.5in, bottom=1in, left=0.12in, right=0.2in]{geometry}
 \usepackage{amsmath}
-\hyphenpenalty=10000
+\usepackage{tcolorbox}
 \setlength{\columnsep}{1cm}
 \setlength{\columnseprule}{0.2pt}
+ 
 
+\newtcolorbox{codeblock}{colback=white, colframe=white!20!black}
+ 
 \newcommand{\actionset}{ \mathcal{A}}
 \newcommand{\stateset}{\mathcal{S}}
 \newcommand{\termstateset}{\mathcal{S}^+}
@@ -69,8 +72,9 @@ v_{\pi}(s) &= E_{\pi} [G_t \mid S_t = s]  \\
                  &=  E_{\pi} [ R_{t+1} \mid S_t = s]  + \gamma  E_{\pi} [ G_{t+1} \mid S_t = s ] \\
                  &=  \sum_{a, r, s'} r p(s',  r \mid s , a) \pi(a \mid s) , \hspace{2ex} \mbox{(Law of Total Expectation)} \\ 
                  &\hspace{3ex} +  \gamma  \sum_{a, s'} E_{\pi}[G_{t + 1} \mid S_{t+1} = s'] p(s' \mid s, a)  \pi (a \mid s)  \\
-                 &=  \sum_{a, r, s'} r p( r \mid s , a) \pi(a \mid s)  +  \gamma  \sum_{a, r, s'} v_{\pi}(s')  p(s', r \mid s, a)  \pi (a \mid s)  \\
-                 &= \sum_{a} \pi(a \mid s)  \sum_{r, s'}   p(s', r \mid s, a)   \left[ r  + \gamma \sum_{s'}  v_{\pi}(s')  \right]
+                 &=  \sum_{a, r, s'} r p( r \mid s , a) \pi(a \mid s)  +  \gamma  \sum_{a, r, s'} v_{\pi}(s')  p(s'
+                 , r \mid s, a)  \pi (a \mid s)  \\
+                 &= \sum_{a} \pi(a \mid s)  \sum_{r, s'}   p(s', r \mid s, a)   \left[ r  + \gamma  v_{\pi}(s')  \right]
 \end{aligned}
 $$
 
@@ -106,12 +110,42 @@ v_*(s) & = \max_{a} q_{\pi_*}(s, a) =\max_a E_{\pi} [G_t \mid S_t = s, A_t = a] 
 $$
 
 Bellman optimality equation for $q_*$
- $q_*(s,a)$ is the value of taking action $a$ at state $s$, then follow optimal policy after. Hence we can also write (TODO: Mathematically justify this)
+ $q_*(s,a)$ is the value of taking action $a$ at state $s$, then follow optimal policy after. Hence we can also write.
 $$ 
 \begin{aligned}
-q_*(s, a) & = E[R_{t+1} + \gamma v_*(S_{t+1}) \mid s, a] \\
-&= E[R_{t+1} + \gamma  \max_{a'} q_{\pi_*}(s', a')) \mid s, a] \\
-&= \sum_{s', r} p(s', r \mid s, a) [ r +\gamma  \max_{a'} q_{\pi_*}(s', a')] \\
+q_*(s, a) &= \max_{\pi} q_{\pi} (s, a) \\
+&= \max_{\pi} E_{\pi} [R_{t+1} + \gamma G_{t+1} \mid s, a] \\
+& = \max_{\pi} \left( E_{\pi}[R_{t+1} \mid s, a]  + \gamma E_{\pi}[ G_{t+1}  \mid s, a]  \right)\\
+&= \max_{\pi}  \left( E_{\pi}[R_{t+1} \mid s, a]  +  \gamma \sum_{s'} E_{\pi}[ G_{t+1} \mid s'] p(s' \mid s, a)  \right)\\
+&=\left( E_{\pi}[R_{t+1} \mid s, a]  +  \gamma  \max_{\pi}   \sum_{s'} v_{\pi}(s') p(s' \mid s, a)  \right)\\
+&= \sum_{s', r }  p(s', r \mid s, a) \left[ r +  \gamma  \max_{\pi}  v_{\pi}(s') p(s', r \mid s, a) \right] \\
+&= \sum_{s', r }  p(s', r \mid s, a) \left[ r +  \gamma  v_{*}(s') p(s', r \mid s, a) \right] \\
+&= \sum_{s', r }  p(s', r \mid s, a) \left[ r +  \gamma  \max_{a'} q_{*}(s', a') p(s', r \mid s, a) \right] \\
 \end{aligned}$$
 
+Once we have $v_*(s)$, optimal policy is just a one step search, it selects the action that maximize the sum of immediate reward and the value of the next state i.e.  $\max\{R_{t+1} + \gamma v_*(S_{t+1})\}$.  If we have $q_*(s, a)$ instead, then for any $s$,  the optimal policy will be just the action that maximize $q_*(s, a)$.
+
+Solving bellman equation is not pratical since we all satisfy the following 3 conditions:.
+\begin{enumerate}
+  \item Know dynamics of the environemtn (Poker provides partially observed state only)
+ \item  Have  enough computation resource (Go has huge state space exceeed the number of atoms in the universe)
+ \item  Problem needs to have markov property (Weather predition cannot be based on yesterday only)
+\end{enumerate}
+ Therefore we typically find approximations to the value functions.
+ 
+ \section*{Solving Bellman Equation with DP}
+ 
+ \subsubsection*{Policy Evaluation}
+ Recall that for any policy $\pi$,  $$v_{\pi} (s)  = \sum_{a} \pi(a \mid s)  \sum_{r, s'}   p(s', r \mid s, a)   \left[ r  + \gamma v_{\pi}(s')  \right]$$
+ If the environment is known, we can solve it as a set of linear equations. If not, we can approximate $v_{\pi}$ given $\pi$ by initializing $v_0$ and following the iteration: (Note that unique existence and convergence is guaranteed as long as $\gamma < 1$ (e.g.  $||v_{k+1} - v_k||_\infty \rightarrow 0$). )
+ $$ \begin{aligned}
+  v_{k+1} (s)  &= E_{\pi} [R_{t+1} + \gamma v_k(S_{t+1}) \mid S_t]  \\
+                       &=  \sum_{a} \pi(a \mid s)  \sum_{r, s'}   p(s', r \mid s, a)   \left[ r  + \gamma v_{k}(s')  \right] \\
+ \end{aligned}$$
+  
+  Since we are averaging the next states, this is called expected update. There are two ways to update algorithm, "in-place update" where we do a sweep through a single array ($v(s')$ can be the updated value for some $s'$) and "double buffers update" where we keep two arrays, update the back buffer array using the front buffer array and swap the reference. Both will converge. We usually prefer the former.
+  
+ \subsubsection*{Policy Improvement}
+ 
+ 
 \end{document}
