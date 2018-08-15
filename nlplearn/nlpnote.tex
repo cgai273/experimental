@@ -113,4 +113,18 @@ Once we have the matrix, we can apply filter-pooling layers as many layer deep a
 (TODO: Include tri-letter representation of text)
 
 \section{Language Modeling}
+Given a sequence of words $w = ()w_1, w_2, \ldots , w_k)$, we can predict it's probability by 
+$$ p(w) = p(w_1, w_2, \ldots , w_k) = p(w_1 ) p(w_2 \mid w_1)  p(w_k \mid s w_{1} \ldots w_{k-1} ) \ldots $$
+
+We can simply this using Markov assumption cut off the dependency after $n - 2$ terms. 
+$$p(w_i \mid w_1 \ldots w_{i-1}) = p(w_i \mid w_{i -  n + 1} \ldots w_{i-1})$$
+When $n = 2$,   $p(w_i \mid w_1 \ldots w_{i-1}) = p(w_i \mid w_{i-1})$. This is the bigram model.
+
+ Note that $p(w) = p(w_1) p(w_2 \mid w_1) \ldots p(w_k \mid w_{k-1})$ now has two problems. Suppose the sentences are "A tree is here", "Two houses are there", firstly  $p(a) = count(a) / count(all-words) = 1 / 8$ which is far too small since it is divided over all words while the two sentences only start with either "a" or "two".  We solve this by adding a "start" token at the beginning of the sentence so $p(a)$ becomes $p(a \mid start) = 1 / 2$.
+ 
+Secondarily, $w$ can be any length, this distribution is not normalized across all $w$ (For example: $p(a) + p(two) = p(a \mid start) + p(two \mid start) = 1/2 + 1/2 = 1$). To solve this,   we add "end" token at the end of a sentence.
+
+Combining both (use \# for both start and end),  we have 
+$$ p(w) = p(w_1 \mid  \#) p(w_2 \mid w_1) \ldots p(w_k \mid w_{k-1}) p(\# \mid w_k)$$
+
 \end{document}
